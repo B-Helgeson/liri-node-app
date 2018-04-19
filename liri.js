@@ -1,5 +1,5 @@
 require("dotenv").config();
-require("request") //use request for IMDB API Calls
+var request = require("request") //use request for IMDB API Calls
 
 //Original
 // var spotify = new Spotify(keys.spotify);
