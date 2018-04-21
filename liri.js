@@ -34,14 +34,12 @@ function runIniti() {
 // Initial run of the program
 runIniti();
 
-// Functionality for IMDB requests
 function imdb(value){
     var movieName = value;
     function convertName() {
         var replacedName = movieName.split(' ').join('+');
         return (replacedName)
     }
-    // Then run a request to the OMDB API with the movie specified
     var queryUrl = "http://www.omdbapi.com/?t=" + convertName() + "&y=&plot=short&apikey=trilogy";
     console.log(queryUrl);
     request(queryUrl, function(error, response, body) {
