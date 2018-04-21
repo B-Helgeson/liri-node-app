@@ -12,19 +12,27 @@ const   keys = require('./keys.js'),
         spotify = new Spotify(keys.spotify),
         client = new Twitter(keys.twitter)
 
+// My Twitter Username
+var userName = {screen_name: "Helgesh"};
+
 // User Inputs
-const   action = process.argv[2], //the first input is the functionality/action
+var     action = process.argv[2], //the first input is the functionality/action
         value = process.argv[3] //the 2nd input is the value to be acted upon
 
 //Swith statement for the function used based on the action variable. 
+function runIniti() {
     switch (action) {
         case "my-tweets": tweets(); break;
         case "spotify-this-song": spotifyit(value); break;
         case "movie-this": imdb(value); break; 
-        case "o-what-it-says": doit(); break;
+        case "do-what-it-says": doit(); break;
         default: // if a valid argument isn't passed
             console.log("Please enter a valid request (see README)")
     }
+}
+
+// Initial run of the program
+runIniti();
 
 // Functionality for IMDB requests
 function imdb(value){
@@ -68,10 +76,24 @@ function spotifyit(value) {
 
 // Functionality for Get Twitter Tweets
 function tweets() {
-    console.log("twitter")
+    client.get("statuses/user_timeline", userName, function (error, tweets, response) {
+        if (!error) {
+            tweets.forEach(tweet => {
+                console.log("-----------")
+                console.log(tweet.text)
+                console.log("Tweet from: " + tweet.created_at)
+            })
+        } else {
+            console.log('Error occurred: ' + error)
+        }
+    })
 }
 
 // Functionality to run the random.txt file
 function doit() {
-    console.log("Just Do It!")
+    let fileAction, fileValue
+    [fileAction, fileValue] = fs.readFileSync('random.txt', 'utf8').split(',')
+    action = fileAction; // sets file inputs to variables intended to store command line inputs
+    value = fileValue; // sets file inputs to variables intended to store command line inputs
+    runIniti();
 }
